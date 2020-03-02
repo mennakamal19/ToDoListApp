@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTaskActivity"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="New Task"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp"
+            android:layout_margin="10dp"
+            />
+
+        <EditText
+            android:id="@+id/tasktitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Task"
+            android:textSelectHandle="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="20dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="priority"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorAccent"
+                android:drawableStart="@drawable/ic_priority"
+                android:drawableLeft="@drawable/ic_priority"
+                />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            </com.jaredrummler.materialspinner.MaterialSpinner>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="20dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:text="Date"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorAccent"
+                android:drawableStart="@drawable/ic_calendar_page_empty"
+                android:drawableLeft="@drawable/ic_calendar_page_empty"
+                />
+
+            <Button
+                android:id="@+id/datepicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="select"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/button"
+                >
+
+            </Button>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:text="Time"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorAccent"
+                android:drawableStart="@drawable/ic_access_time_black_24dp"
+                android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                />
+
+            <Button
+                android:id="@+id/timepicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="select"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:background="@drawable/button"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="Add Task"
+        android:textSize="20sp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button"
+        android:onClick="addNewTask"
+        />
+
+    </LinearLayout>
+
+</RelativeLayout>
