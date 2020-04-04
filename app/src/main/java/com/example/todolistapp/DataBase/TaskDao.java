@@ -1,5 +1,6 @@
 package com.example.todolistapp.DataBase;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,18 +16,17 @@ public interface TaskDao
     void insert(TaskModel...taskModels);
 
     @Query("SELECT*FROM TASKMODEL WHERE task_priority=1 ")
-    List<TaskModel>gethigh();
+    List<TaskModel> getHigh();
 
     @Query("SELECT*FROM TASKMODEL WHERE task_priority=2 ")
-    List<TaskModel>getm();
+    List<TaskModel>getMedium();
 
     @Query("SELECT*FROM TASKMODEL WHERE task_priority=3 ")
-    List<TaskModel>getlow();
+    List<TaskModel>getLow();
 
     @Delete
     void delete(TaskModel...taskModels);
 
     @Update
     void update(TaskModel...taskModels);
-
 }

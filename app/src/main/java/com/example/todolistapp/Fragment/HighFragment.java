@@ -1,8 +1,12 @@
 package com.example.todolistapp.Fragment;
 
+import android.annotation.SuppressLint;
+import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,36 +14,42 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.todolistapp.AddTaskActivity;
 import com.example.todolistapp.DataBase.AppDatabase;
 import com.example.todolistapp.DataBase.TaskModel;
+import com.example.todolistapp.MainActivity;
 import com.example.todolistapp.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class HighFragment extends Fragment
 {
-    String title,time,date;
+    private String title,time,date;
     View view;
-
+    private int priority;
     RecyclerView recyclerView;
     DividerItemDecoration dividerItemDecoration;
     RecyclerView.LayoutManager layoutManager;
-    List<TaskModel>tm;
-
+    List<TaskModel>taskModel;
     AppDatabase appDatabase;
+
+    public HighFragment(List<TaskModel> taskModel) {
+        this.taskModel = taskModel;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-          view = inflater.inflate(R.layout.high_fragment,container,false); // hana kan lazm a3rf View foo2
+        view = inflater.inflate(R.layout.high_fragment,container,false);
         return view;
     }
 
@@ -55,7 +65,7 @@ public class HighFragment extends Fragment
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        TaskAdapter taskAdapter = new TaskAdapter(tm);
+        TaskAdapter taskAdapter = new TaskAdapter(taskModel);
         recyclerView.setAdapter(taskAdapter);
     }
     class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVh>
@@ -67,6 +77,7 @@ public class HighFragment extends Fragment
             this.taskModelList = taskModelList;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @NonNull
         @Override
         public TaskVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -77,9 +88,8 @@ public class HighFragment extends Fragment
         @Override
         public void onBindViewHolder(@NonNull TaskVh holder, int position)
         {
-            TaskModel taskModel ;
-            Intent intent = new Intent();
-            taskModel = intent.getParcelableExtra("TaskModel");
+            TaskModel taskModel = new TaskModel(priority,title,date,time) ;
+            priority = taskModel.getPriority();
             title=taskModel.getTitle();
             time=taskModel.getTime();
             date = taskModel.getDate();
@@ -87,7 +97,6 @@ public class HighFragment extends Fragment
             holder.titlefield.setText(title);
             holder.datefield.setText(date);
             new get().execute(taskModel);
-
         }
 
         @Override
@@ -100,7 +109,7 @@ public class HighFragment extends Fragment
         {
             TextView timefield,titlefield,datefield;
 
-            public TaskVh(@NonNull View itemView)
+            private TaskVh(@NonNull View itemView)
             {
                 super(itemView);
                 titlefield = itemView.findViewById(R.id.task_title);
@@ -114,7 +123,26 @@ public class HighFragment extends Fragment
         @Override
         protected Void doInBackground(TaskModel... taskModels)
         {
-            appDatabase.taskDao().gethigh();
+            switch (priority)
+        {
+            case 1 :
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                appDatabase.taskDao().getHigh();
+                startActivity(intent);
+            break;
+            case 2:
+                Intent intent1 = new Intent(getContext(), MainActivity.class);
+                intent1.putExtra("TaskModel",(Serializable) taskModel);
+                appDatabase.taskDao().getMedium();
+                startActivity(intent1);
+                break;
+            case 3:
+                Intent intent2 = new Intent(getContext(), MainActivity.class);
+                intent2.putExtra("TaskModel",(Serializable) taskModel);
+                appDatabase.taskDao().getLow();
+                startActivity(intent2);
+                break;
+        }
             return null;
         }
     }

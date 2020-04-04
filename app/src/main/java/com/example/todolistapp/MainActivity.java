@@ -19,6 +19,10 @@ import com.example.todolistapp.Fragment.LowFragment;
 import com.example.todolistapp.Fragment.MediumFragment;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +32,7 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     ViewPager viewPager;
     FragmentPagerAdapter fragmentPagerAdapter;
-    HighFragment highFragment;
-    Parcelable[] t;
+    List<TaskModel>taskModel ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,17 +42,15 @@ public class MainActivity extends AppCompatActivity
         appDatabase = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"Room10").build();
         tabLayout = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.viewpager);
-       t=getIntent().getParcelableArrayExtra("TaskModel");
-
+        taskModel = new ArrayList<>();
+        taskModel = getIntent().getParcelableArrayListExtra("TaskModel");
         fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
             Fragment[] fragments = new Fragment[]
                     {
-                             new HighFragment(),
-                            new MediumFragment(),
-                            new LowFragment()
-
-
+                            new HighFragment(taskModel),
+                            new HighFragment(taskModel),
+                            new HighFragment(taskModel)
                     };
             String[] strings = new String[]
                     {
@@ -80,6 +81,5 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(getApplicationContext(), AddTaskActivity.class);
         startActivity(intent);
-
     }
 }

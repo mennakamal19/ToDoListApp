@@ -3,6 +3,7 @@ package com.example.todolistapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
@@ -18,13 +19,22 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.todolistapp.DataBase.AppDatabase;
+import com.example.todolistapp.DataBase.TaskDao;
 import com.example.todolistapp.DataBase.TaskModel;
 import com.example.todolistapp.Fragment.HighFragment;
 import com.example.todolistapp.Fragment.LowFragment;
 import com.example.todolistapp.Fragment.MediumFragment;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 public class AddTaskActivity extends AppCompatActivity
 {
@@ -36,6 +46,7 @@ public class AddTaskActivity extends AppCompatActivity
     DatePickerDialog pickerDialog;
     TimePickerDialog timePickerDialog;
     AppDatabase appDatabase;
+    List<TaskModel>taskModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +58,7 @@ public class AddTaskActivity extends AppCompatActivity
         timepicker = findViewById(R.id.timepicker);
         datepicker = findViewById(R.id.datepicker);
         appDatabase = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"Room10").build(); // name should be unique
-
+        taskModel = new ArrayList<>();
         spinner();
         datePicker();
         timePicker();
@@ -127,32 +138,17 @@ public class AddTaskActivity extends AppCompatActivity
         {
             Toast.makeText(getApplicationContext(), "Enter task title ", Toast.LENGTH_SHORT).show();
         }
-        TaskModel taskModel = new TaskModel(priority,title,date,time);
-        new insert().execute(taskModel);
-        /*switch (priority)
-        {
-            case 1 :
-                Intent intent = new Intent(getApplicationContext(), HighFragment.class);
-                intent.putExtra("TaskModel",taskModel);
-                startActivity(intent);
-            break;
-            case 2:
-                Intent intent1 = new Intent(getApplicationContext(), MediumFragment.class);
-                intent1.putExtra("TaskModel",taskModel);
-                startActivity(intent1);
-                break;
-            case 3:
-                Intent intent2 = new Intent(getApplicationContext(), LowFragment.class);
-                intent2.putExtra("TaskModel",taskModel);
-                startActivity(intent2);
-                break;
-        }*/
-
-        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //intent.putExtra("TaskModel",taskModel);
-        //startActivity(intent);
+        final TaskModel taskModel = new TaskModel(priority,title,date,time);
+        new insert().execute(new Runnable() {
+            @Override
+            public void run() {
+               new insert().execute(taskModel);
+            }
+        });
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.putParcelableArrayListExtra("TaskModel",  taskModel);
+        startActivity(intent);
     }
-
     class insert extends AsyncTask<TaskModel,Void,Void>
     {
         @Override
