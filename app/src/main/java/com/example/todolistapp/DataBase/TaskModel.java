@@ -21,7 +21,7 @@ public  class  TaskModel extends ArrayList<Parcelable> implements Parcelable {
     @ColumnInfo(name="task_id")
     @PrimaryKey(autoGenerate = true)
     private int Taskid;
-    @ColumnInfo(name = "task_priority")
+    @ColumnInfo(name ="task_priority")
     private int priority;
     @ColumnInfo(name = "task_title")
     private String title;
