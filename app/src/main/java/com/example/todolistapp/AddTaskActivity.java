@@ -149,6 +149,7 @@ public class AddTaskActivity extends AppCompatActivity
         intent.putParcelableArrayListExtra("TaskModel",  taskModel);
         startActivity(intent);
     }
+
     
     class insert extends AsyncTask<TaskModel,Void,Void>
     {
